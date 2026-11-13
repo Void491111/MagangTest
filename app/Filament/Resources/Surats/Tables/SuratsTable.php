@@ -2,13 +2,10 @@
 
 namespace App\Filament\Resources\Surats\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\ForceDeleteBulkAction;
-use Filament\Actions\RestoreBulkAction;
+use App\Enums\SifatSurat;
+use App\Enums\TipeSurat;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\TrashedFilter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class SuratsTable
@@ -17,58 +14,40 @@ class SuratsTable
     {
         return $table
             ->columns([
+                TextColumn::make('no_agenda')
+                    ->label('No. Agenda')
+                    ->searchable()
+                    ->sortable(),
+
                 TextColumn::make('tipe')
                     ->badge(),
-                TextColumn::make('no_agenda')
-                    ->searchable(),
-                TextColumn::make('no_surat')
-                    ->searchable(),
-                TextColumn::make('tgl_surat')
-                    ->date()
-                    ->sortable(),
-                TextColumn::make('tgl_diterima')
-                    ->date()
-                    ->sortable(),
-                TextColumn::make('pengirim_tujuan')
-                    ->searchable(),
+
                 TextColumn::make('perihal')
+                    ->searchable()
+                    ->limit(40),
+
+                TextColumn::make('pengirim_tujuan')
+                    ->label('Pengirim/Tujuan')
                     ->searchable(),
+
+                TextColumn::make('tgl_surat')
+                    ->label('Tanggal')
+                    ->date('d M Y')
+                    ->sortable(),
+
                 TextColumn::make('sifat')
                     ->badge(),
-                TextColumn::make('jenisSurat.id')
-                    ->searchable(),
-                TextColumn::make('lampiran_path')
-                    ->searchable(),
+
                 TextColumn::make('status')
-                    ->searchable(),
-                TextColumn::make('created_by')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->badge(),
             ])
             ->filters([
-                TrashedFilter::make(),
+                SelectFilter::make('tipe')
+                    ->options(TipeSurat::class),
+
+                SelectFilter::make('sifat')
+                    ->options(SifatSurat::class),
             ])
-            ->recordActions([
-                EditAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
-                ]),
-            ]);
+            ->defaultSort('created_at', 'desc');
     }
 }
