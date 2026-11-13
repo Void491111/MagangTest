@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\SifatSurat;
 use App\Enums\TipeSurat;
+use App\Services\NomorAgendaService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -27,6 +28,14 @@ class Surat extends Model
             'tgl_surat' => 'date',
             'tgl_diterima' => 'date',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function (Surat $surat) {
+            $surat->no_agenda ??= app(NomorAgendaService::class)->generate();
+            $surat->created_by ??= auth()->id();
+        });
     }
 
     public function jenisSurat(): BelongsTo
