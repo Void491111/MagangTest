@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Surats;
 use App\Filament\Resources\Surats\Pages\CreateSurat;
 use App\Filament\Resources\Surats\Pages\EditSurat;
 use App\Filament\Resources\Surats\Pages\ListSurats;
+use App\Filament\Resources\Surats\RelationManagers\DisposisisRelationManager;
 use App\Filament\Resources\Surats\Schemas\SuratForm;
 use App\Filament\Resources\Surats\Tables\SuratsTable;
 use App\Models\Surat;
@@ -15,7 +16,6 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\Surats\RelationManagers;
 
 class SuratResource extends Resource
 {
@@ -38,7 +38,7 @@ class SuratResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\DipsisisRelationManagers::class,
+            DisposisisRelationManager::class,
         ];
     }
 
