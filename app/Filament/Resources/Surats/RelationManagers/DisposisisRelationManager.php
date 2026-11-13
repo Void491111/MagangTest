@@ -31,6 +31,7 @@ class DisposisisRelationManager extends RelationManager
                     ->label('Ditujukan ke')
                     ->relationship('keUser', 'name')
                     ->searchable()
+                    ->preload()
                     ->required(),
 
                 Select::make('instruksi')
@@ -59,6 +60,11 @@ class DisposisisRelationManager extends RelationManager
                     ->downloadable()
                     ->openable(),
             ]);
+    }
+
+    public function keUser(): BelongsTo
+    {
+        return $this->belongsTo(user::class, 'ke_user_id');
     }
 
     public function table(Table $table): Table
